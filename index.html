@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shin Thant Tun | Computer Engineering</title>
+    <style>
+        /* CSS: Clean, Minimalist, Dark Blue Theme */
+        :root {
+            --bg-color: #f4f6f9; 
+            --text-main: #1e293b; 
+            --text-muted: #64748b; 
+            --accent: #0a192f; 
+            --highlight: #0284c7; 
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            line-height: 1.7;
+            scroll-behavior: smooth; 
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--accent);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Nav Links CSS */
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            margin-left: 1.5rem;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--highlight);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .view-section {
+            display: none; 
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .view-section.active {
+            display: block; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        section {
+            padding: 100px 0 60px;
+            border-bottom: 1px solid #e2e8f0;
+            /* FIX: Forces each section to take up at least the full screen height */
+            /* This pushes the next section title out of view until you scroll */
+            min-height: calc(100vh - 70px); 
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+            display: inline-block;
+            border-bottom: 3px solid var(--highlight);
+            padding-bottom: 5px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.3s, transform 0.2s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: var(--highlight);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--highlight);
+            border: 2px solid var(--highlight);
+            margin-bottom: 2rem;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--highlight);
+            color: white;
+        }
+
+        /* Hero Section */
+        #hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-bottom: none;
+            padding-top: 0;
+        }
+
+        #hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        #hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        /* Project Cards */
+        .project-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+            margin-bottom: 2rem;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer; 
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+            border-color: var(--highlight);
+        }
+
+        .project-title { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.5rem;}
+        .project-tech { font-family: monospace; color: var(--highlight); font-size: 0.9rem; margin-bottom: 1rem; }
+
+        /* Experience Section */
+        .experience-item {
+            margin-bottom: 2rem;
+        }
+        
+        .experience-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .experience-meta {
+            color: var(--highlight);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* Contact Section Override */
+        #contact {
+            min-height: auto; /* Stops the contact section from having too much empty space */
+        }
+
+        /* Project Detail Pages */
+        .project-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .project-header h1 { font-size: 2.5rem; color: var(--accent); margin-bottom: 0.5rem; }
+        
+        .media-placeholder {
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 8px;
+            text-align: center;
+            color: var(--text-muted);
+            border: 1px solid #cbd5e1;
+            margin-bottom: 2rem;
+            overflow: hidden; /* Traps the image inside the rounded corners */
+        }
+
+        /* This new rule forces the image to behave */
+        .media-placeholder img {
+            width: 100%;
+            height: 100%;
+            max-height: 450px; /* Keeps tall photos from taking up the whole screen */
+            object-fit: cover; /* Crops it nicely without stretching the photo */
+            display: block;
+        }
+
+        .detail-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+        
+        .detail-card h3 { color: var(--accent); margin-bottom: 1rem; font-size: 1.3rem;}
+        .detail-card ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+        .detail-card li { margin-bottom: 0.5rem; }
+
+        /* Footer */
+        footer { text-align: center; padding: 3rem 0; color: var(--text-muted); font-size: 0.9rem; }
+        
+        .social-links {
+            margin-bottom: 1rem;
+        }
+
+        .social-links a {
+            color: var(--accent);
+            text-decoration: none;
+            margin: 0 10px;
+            font-weight: 600;
+        }
+
+        .social-links a:hover {
+            color: var(--highlight);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <a onclick="showView('home-view')" class="logo">ST.</a>
+            
+            <div class="nav-links">
+                <a onclick="goToSection('projects')">Projects</a>
+                <a onclick="goToSection('experience')">Experience</a>
+                <a onclick="goToSection('contact')">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="home-view" class="view-section active">
+        <div class="container">
+            <section id="hero">
+                <h1>Hi, I'm Shin Thant Tun.</h1>
+                <p>I'm a Computer Engineering undergraduate at KMITL specializing in embedded systems, digital logic design, and hardware-software integration.</p>
+                <div>
+                    <a onclick="goToSection('contact')" class="btn">Say Hello</a>
+                </div>
+            </section>
+
+            <section id="projects">
+                <h2>Featured Projects</h2>
+
+                <div class="project-card" onclick="showView('drone-view')">
+                    <h3 class="project-title">Infrastructure Inspection Drone Payload</h3>
+                    <div class="project-tech">ESP32 • OV2640 • OpenCV • Python</div>
+                    <p>Engineered an independent computer vision payload utilizing an ESP32 and camera module, integrated onto a commercial drone platform for structural crack detection.</p>
+                    <span style="color: var(--highlight); font-weight: 500; font-size: 0.9rem; margin-top: 1rem; display: inline-block;">View Project Details →</span>
+                </div>
+
+                <div class="project-card" onclick="showView('rhythm-view')">
+                    <h3 class="project-title">"Rhythm Hero" Arcade Game</h3>
+                    <div class="project-tech">FPGA (Basys3) • Raspberry Pi • VHDL</div>
+                    <p>Designed and built a hardware-based arcade rhythm game. Programmed VGA graphics, managed audio synchronization, and integrated physical arcade buttons.</p>
+                    <span style="color: var(--highlight); font-weight: 500; font-size: 0.9rem; margin-top: 1rem; display: inline-block;">View Project Details →</span>
+                </div>
+            </section>
+
+            <section id="experience">
+                <h2>Experience & Awards</h2>
+                
+                <div class="experience-item">
+                    <div class="experience-title">National Grand Prize - Network Track</div>
+                    <div class="experience-meta">Huawei ICT Competition | 2025 - 2026</div>
+                    <p>Secured first place in Thailand by demonstrating advanced proficiency in computer networking concepts and practical implementation against top national competitors.</p>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-title">Guest Speaker</div>
+                    <div class="experience-meta">Become a Future Scholar Training Camp | Dec 2025</div>
+                    <p>Delivered a presentation to prospective students detailing strategies for succeeding in rigorous academic environments and transitioning into top-tier university programs.</p>
+                </div>
+                
+                <div class="experience-item">
+                    <div class="experience-title">iQuHACK Participant</div>
+                    <div class="experience-meta">MIT | 2025</div>
+                    <p>Selected to participate in the prestigious quantum computing hackathon hosted by the Massachusetts Institute of Technology.</p>
+                </div>
+            </section>
+
+            <section id="contact" style="border-bottom: none; text-align: center;">
+                <h2>Get In Touch</h2>
+                <p style="margin-bottom: 2rem;">Whether you have a question, a lab opportunity, or just want to say hi, I'll try my best to get back to you!</p>
+                <a href="mailto:1052068011999@kmitl.ac.th" class="btn">Say Hello</a>
+            </section>
+        </div>
+    </div>
+
+    <div id="drone-view" class="view-section">
+        <div class="container" style="padding-top: 120px;">
+            <button class="btn btn-outline" onclick="goToSection('projects')">← Back to Projects</button>
+            
+            <div class="project-header">
+                <h1>Infrastructure Drone Payload</h1>
+                <div class="project-tech">ESP32 • OV2640 • Python • Systems Integration</div>
+            </div>
+
+            <div class="media-placeholder">
+                <img src="DroneTwo.jpg" alt="Picture of drone">
+            </div>
+
+            <div class="detail-card">
+                <h3>The System Architecture</h3>
+                <p>Instead of building a flight controller from scratch, I engineered a custom "vision payload" utilizing an ESP32 microcontroller and an OV2640 camera module. This payload acts as an independent subsystem mounted to the carrier drone.</p>
+                <ul>
+                    <li><strong>Carrier Platform:</strong> Off-the-shelf commercial drone handling flight kinematics.</li>
+                    <li><strong>Vision Sensor:</strong> OV2640 Camera Module interfaced via FPC connector.</li>
+                    <li><strong>Electrical Isolation:</strong> The payload operates independently to prevent drawing excessive current from the primary flight controller.</li>
+                </ul>
+            </div>
+
+            <div class="detail-card">
+                <h3>Computer Vision Implementation</h3>
+                <p>The ESP32 broadcasts a web server containing the live camera feed. On the ground station, a Python script utilizes OpenCV to process incoming video frames, applying image thresholding to highlight structural anomalies.</p>
+                <br>
+                <a href="https://github.com/RichardHtunn/infrastructure-inspection-drone" target="_blank" class="btn">View Source Code on GitHub</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="rhythm-view" class="view-section">
+        <div class="container" style="padding-top: 120px;">
+            <button class="btn btn-outline" onclick="goToSection('projects')">← Back to Projects</button>
+            
+            <div class="project-header">
+                <h1>"Rhythm Hero" Arcade Game</h1>
+                <div class="project-tech">FPGA (Basys3) • Raspberry Pi • VHDL • Digital Logic</div>
+            </div>
+
+            <div class="media-placeholder">
+                <img src="RhythmTwo.jpg" alt="Picture of Arcade Game">
+            </div>
+
+            <div class="detail-card">
+                <h3>Hardware-Software Synchronization</h3>
+                <p>This project relies on a distributed hardware model to handle high-speed visual rendering and complex audio playback simultaneously.</p>
+                <ul>
+                    <li><strong>Visual Engine (FPGA):</strong> A Basys3 board running custom VHDL handles the game state machine and generates 12-bit VGA timing signals.</li>
+                    <li><strong>Audio Management (Raspberry Pi):</strong> Receives 3.3V logic triggers via GPIO to manage multi-track audio playback with zero latency.</li>
+                    <li><strong>Input Debouncing:</strong> Physical arcade buttons are routed through hardware debouncing logic synthesized on the FPGA.</li>
+                </ul>
+            </div>
+
+            <div class="detail-card">
+                <br>
+                <a href="https://github.com/RichardHtunn/RhythmHero" target="_blank" class="btn">View Source Code on GitHub</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://github.com/RichardHtunn" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/shin-thant-htun44" target="_blank">LinkedIn</a>
+        </div>
+        <p>&copy; 2026 Shin Thant Tun. Built from scratch.</p>
+    </footer>
+
+    <script>
+        // Shows the requested page and scrolls to the top (Used for Project Details)
+        function showView(viewId) {
+            document.querySelectorAll('.view-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Switches to Home page and smoothly scrolls to the section WITHOUT jumping to the top first
+        function goToSection(sectionId) {
+            // 1. Ensure the home view is visible, but bypass the 'showView' scroll-to-top logic
+            document.querySelectorAll('.view-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('home-view').classList.add('active');
+            
+            // 2. Smoothly scroll directly to the section
+            setTimeout(() => {
+                const section = document.getElementById(sectionId);
+                if(section) {
+                    // Account for the height of the fixed navigation bar (approx 70px)
+                    const yOffset = -70; 
+                    const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+            }, 10); 
+        }
+    </script>
+</body>
+</html>
